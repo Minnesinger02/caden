@@ -1,0 +1,13 @@
+[project]
+name = "encoder-decision-lab"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = ["torch>=2.6,<3", "transformers>=4.51,<5", "safetensors>=0.5"]
+
+[project.optional-dependencies]
+data = ["datasets>=3,<5"]
+sft = ["peft>=0.18,<1"]
+litjev-audit = ["pydantic>=2.11,<3", "pillow>=10.4", "pytest>=8.4", "fastapi>=0.116,<1", "httpx>=0.28,<1"]
+
+[tool.uv]
+package = false

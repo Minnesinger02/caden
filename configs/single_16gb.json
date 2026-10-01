@@ -1,0 +1,16 @@
+{
+  "encoder": "distilbert/distilbert-base-uncased",
+  "decoder": "Qwen/Qwen3-0.6B",
+  "dataset": "legacy-datasets/banking77",
+  "lock_file": "configs/resolved_revisions-parquet.json",
+  "source_data": "data/banking77-8-parquet",
+  "candidates": 8,
+  "max_length": 512,
+  "encoder_batch_size": 1,
+  "lora_rank": 8,
+  "gradient_accumulation": 8,
+  "epochs": 1,
+  "seed": 42,
+  "dtype": "float32",
+  "note": "Conservative pilot, sequential models, oracle shortlist, no 16GB CUDA measurement yet."
+}

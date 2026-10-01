@@ -1,0 +1,11 @@
+# Install CUDA torch separately using setup.ps1. Do not mix Kev into this environment.
+torch==2.8.0
+transformers==4.57.6
+peft==0.21.1
+safetensors>=0.5,<1
+datasets>=3,<5
+pydantic>=2.11,<3
+pillow>=10.4
+pytest>=8.4
+fastapi>=0.116,<1
+httpx>=0.28,<1
