@@ -1,1 +1,1 @@
-"""Shared data and evaluation utilities; the root experiment is encoder-only."""
+"""Compatibility import for the original Caden model-card examples."""

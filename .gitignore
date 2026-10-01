@@ -4,7 +4,9 @@ __pycache__/
 .env
 .env.*
 .cache/
-.tools/
+*.egg-info/
+build/
+dist/
 checkpoints/
 results/
 data/
@@ -16,3 +18,4 @@ release-staging/
 *.pt
 *.bin
 *.log
+predictions*.jsonl

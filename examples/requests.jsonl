@@ -1,0 +1,2 @@
+{"id":"card","state":"I lost my bank card and need another one.","question":"Which intent best matches the request?","criteria":{"replace":"Replace a lost card","transfer":"Make a bank transfer"}}
+{"id":"song","state":"Please add this song to my playlist.","question":"Which intent best matches the request?","criteria":{"playlist":"Add a song to a playlist","weather":"Get a weather forecast","restaurant":"Book a restaurant"}}

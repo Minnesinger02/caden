@@ -1,0 +1,2 @@
+{"id":"example-1","split":"train","state":"I lost my card. Please send a replacement.","question":"Which intent best matches the request?","criteria":{"replace":"Replace a lost card","transfer":"Make a bank transfer"},"label":"replace"}
+{"id":"example-2","split":"train","state":"Please move money to another account.","question":"Which intent best matches the request?","criteria":{"replace":"Replace a lost card","transfer":"Make a bank transfer"},"label":"transfer"}

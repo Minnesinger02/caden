@@ -1,13 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
 [project]
-name = "encoder-decision-lab"
-version = "0.1.0"
+name = "caden-encoder"
+version = "0.2.0"
+description = "Train and run a compact candidate decision encoder"
+readme = "README.md"
 requires-python = ">=3.11"
-dependencies = ["torch>=2.6,<3", "transformers>=4.51,<5", "safetensors>=0.5"]
+license = "MIT"
+dependencies = ["torch>=2.6,<3", "transformers>=4.51,<5", "safetensors>=0.5", "huggingface-hub>=0.34,<1"]
 
-[project.optional-dependencies]
-data = ["datasets>=3,<5"]
-sft = ["peft>=0.18,<1"]
-litjev-audit = ["pydantic>=2.11,<3", "pillow>=10.4", "pytest>=8.4", "fastapi>=0.116,<1", "httpx>=0.28,<1"]
+[project.scripts]
+caden-train = "caden.train:main"
+caden-infer = "caden.infer:main"
 
-[tool.uv]
-package = false
+[project.urls]
+Repository = "https://github.com/Minnesinger02/caden"
+Models = "https://huggingface.co/Leonard02/caden-encoder-mixed"
+
+[tool.setuptools.packages.find]
+include = ["caden*", "decision_lab*"]
