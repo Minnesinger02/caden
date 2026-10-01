@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'paper/arr'
 sys.path.insert(0, str(ROOT))
 from scripts.build_chinese_translation import tables
+from scripts.caden_paper_branding import RESOURCE_ZH
 
 SECTIONS = {
     'Introduction': ('引言', '''概率决策接口可以从用户描述的候选中返回概率，无须生成解释。这一接口并不决定模型是联合编码候选、隔离候选，还是从因果语言模型读出概率。本文研究单张16GB GPU预算下，小型本地可训练编码器的领域准确率、候选变化稳定性及实际决策成本。
@@ -143,11 +144,34 @@ def main():
         'Order flips/%': '乱序翻转/%', 'Original/%': '原候选/%', 'Drop/%': '删非gold/%',
         'Add/%': '增非gold/%', 'Absent+none/%': 'gold缺失+none/%', 'Input length': '输入长度',
         'Encoder decisions/s': 'Encoder决策/秒', 'Qwen decisions/s': 'Qwen决策/秒', 'Paired ratio [95% CI]': '配对比值[95%区间]'}
+    headers['Caden mixed / system [95% CI]'] = 'Caden mixed/该系统[95%区间]'
+    SECTIONS['Task and Experimental Protocol'] = (SECTIONS['Task and Experimental Protocol'][0],
+        SECTIONS['Task and Experimental Protocol'][1] + '\n\n主表继续报告三个训练种子的均值±样本标准差（ddof=1）；精确种子值与样本方差见 results/seed-variance-summary.md，方差单位为百分点平方（pp²）。单发布版本的社区模型及API没有训练种子方差估计，不能以0代替缺失。计时block波动、训练种子波动和题目配对置信区间分别解释。主表速度取相同200题BANKING开发输入，不是CLINC速度；Jev为单轮HTTP四并发、含传输，时延率不是并发总吞吐。\n\n新增经典baseline为TF-IDF描述余弦和TF-IDF线性分类器（SGD log-loss、alpha1e-4、五轮、种子42/43/44）。word unigram/bigram、min_df2、最多30000特征、sublinear_tf，仅在train拟合词汇／IDF。主表baseline使用同一BANKING+CLINC混合训练文本，线性分类器另使用标签，其固定类别logit限制到请求的候选ID；不等价于Caden对任意新候选描述的评分。原始分数softmax归一化，未在test拟合温度。CPU两线程B1、五开发block；余弦缓存描述，线性计时固定seed42。CPU／GPU、容量、轮数、目标与数值精度不同，不能作等算力因果比较。这些较晚baseline为探索性补充，recipe在各自评分前冻结。')
+    SECTIONS['Accuracy and Domain Expansion'] = (SECTIONS['Accuracy and Domain Expansion'][0],
+        SECTIONS['Accuracy and Domain Expansion'][1] + '\n\n同混合训练的TF-IDF固定类别线性baseline在BANKING／CLINC为95.55%／97.91%，Caden mixed为94.42%／97.48%。这个有竞争力的简单baseline进一步限制encoder准确率优越性的主张；其概率校准和CPU成本不同，也不能靠描述识别未训练过的新类别。')
+    SECTIONS['Additional Diagnostics and Historical Experiments'] = (SECTIONS['Additional Diagnostics and Historical Experiments'][0],
+        SECTIONS['Additional Diagnostics and Historical Experiments'][1] + '\n\n**新增完整类别benchmark。** 固定DeepPavlov SNIPS variant（1400测试行，1395规范化文本group）与AG News（7600测试行），分别呈现全部七／四类别，不按gold挑干扰项。保持官方test，训练排除精确文本重叠、去重并从每类train留最多100题dev；描述仅用类别名，不用另附的LLM生成描述。Caden直接迁移已有三个混合训练checkpoint，没有新任务更新；线性baseline在目标域train监督（SNIPS12167／AG News119439题），余弦只拟合词汇／IDF。监督暴露不等，比较用于诊断迁移而非架构因果效果。新任务所有运行零失败；社区模型及付费Jev尚未在新任务评估。表中均值±SD与样本方差使用三个种子，确定性余弦不估计种子方差。速度是各任务seed42单轮p50，Caden用GPU、TF-IDF用CPU；不同于主表五block计时。')
+    if r'\paragraph{Caden v2 continuation.}' in source:
+        SECTIONS['Task and Experimental Protocol'] = (SECTIONS['Task and Experimental Protocol'][0],
+            SECTIONS['Task and Experimental Protocol'][1] + '\n\n**Caden v2续训。** 三个种子分别从对应原混合checkpoint开始，四域各3000共12000，固定一轮、AdamW1e-5、B1、clip1、FP32/eager与随机候选顺序，含旧域replay；不使用探索性pilot权重。续训train排除所有dev/test/calibration文本group；新温度用3996独立校准题（原3396＋新两域各300）。预先固定发布门槛为三seed平均旧dev退化不超过1个百分点、两个新dev均提升。完整test是已读benchmark上的探索性重测，不用test选择seed；额外监督不同于原社区或Qwen基线。')
+        SECTIONS['Additional Diagnostics and Historical Experiments'] = (SECTIONS['Additional Diagnostics and Historical Experiments'][0],
+            SECTIONS['Additional Diagnostics and Historical Experiments'][1] + '\n\nv2行单独记录多领域续训，原Caden mixed行保留跨域直接迁移成绩，不将两者混为一谈。v2新增任务各训练3000条，线性baseline使用12167／119439条，目标监督仍不匹配。v2主表速度来自之后五串行block，不与原随机block建立新的配对速度比。')
+        pub=json.loads((ROOT/'release-staging/caden-v2/publication-model-completed.json').read_text(encoding='utf-8'))
+        SECTIONS['Reproducibility Statement'] = (SECTIONS['Reproducibility Statement'][0],
+            SECTIONS['Reproducibility Statement'][1] + '\n\n当前HF仓库根为Caden v2，固定revision `'+pub['revision']+'`；旧BANKING+CLINC版本及旧温度仍可按此前commit恢复，Qwen adapter版本未改变。')
+        gh_path=ROOT/'release-staging/caden-v2/publication-github-completed.json'
+        if gh_path.exists():
+            gh=json.loads(gh_path.read_text(encoding='utf-8'))
+            SECTIONS['Reproducibility Statement'] = (SECTIONS['Reproducibility Statement'][0],SECTIONS['Reproducibility Statement'][1] + '\n\n本次更新GitHub代码固定commit `'+gh['git_commit']+'`，Issues保持关闭。')
     projected = []
-    lines = ['# 单GPU预算下用于概率决策的紧凑候选编码器', '',
+    lines = ['# Caden：单GPU预算下用于概率决策的紧凑候选编码器', '',
         '> 英文母本：main_en.tex。当前紧凑稿逐节对应完整实验快照，正文表格由英文投影并翻译表头。论文PDF、页数和匿名材料仍需最终验证，尚非提交就绪稿。', '', '## 摘要', '', fill(abstract), '']
     for name, body in sections.items():
         title, text = SECTIONS[name]
+        if name == 'Reproducibility Statement':
+            text += '\n\n' + RESOURCE_ZH
+        if name == 'Related Systems':
+            text = '本文紧凑候选编码器正式命名为 Caden，混合训练发布版为 Caden-Encoder-Mixed。Qwen LoRA 是独立对照基线。\n\n' + text
         lines += ['## ' + title, '', fill(text), '']
         table = tables(body)
         if table:

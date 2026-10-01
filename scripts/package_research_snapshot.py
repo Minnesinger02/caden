@@ -32,7 +32,7 @@ def main():
                 continue
             if path.suffix.lower() in suffixes or path.name.upper().startswith(('LICENSE', 'NOTICE')):
                 add(path)
-    for name in ['pyproject.toml', 'uv.lock', 'README.md', 'START_HERE_WINDOWS.md']:
+    for name in ['pyproject.toml', 'uv.lock', 'README.md', 'START_HERE_WINDOWS.md', 'LICENSE']:
         add(ROOT / name)
     for folder in ['decision_lab', 'dynamic_candidates', 'prefill_renorm_sft', 'scripts', 'tests', 'external']:
         tree(folder, {'.py', '.toml', '.md', '.json', '.yaml', '.yml', '.txt', '.ps1', '.bat', '.jinja'})

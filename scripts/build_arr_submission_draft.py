@@ -10,6 +10,10 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'paper/arr'
 sys.path.insert(0, str(ROOT))
 from scripts.summarize_replicated_compute import ratio_summary
+from scripts.caden_paper_branding import apply_branding
+from scripts.enhance_main_results import enhance
+from scripts.add_expansion_to_paper import apply_expansion
+from scripts.update_caden_v2_paper import apply_v2
 
 
 def read(path):
@@ -243,6 +247,7 @@ The 32 saved CUDA training-loop records sum to 10.54 recorded hours; the 32 succ
         source = source.replace(key, value)
     if any(key in source for key in substitutes):
         raise ValueError('Unresolved manuscript placeholder')
+    source = apply_v2(apply_expansion(enhance(apply_branding(source))))
     if (OUT / 'main_en.tex').exists():
         old_hash = hashlib.sha256((OUT / 'main_en.tex').read_bytes()).hexdigest()
         archive = OUT / 'archive' / ('before-compact-' + old_hash[:16])

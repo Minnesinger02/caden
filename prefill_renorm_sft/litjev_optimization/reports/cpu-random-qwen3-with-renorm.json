@@ -1,0 +1,790 @@
+{
+  "settings": {
+    "out": "prefill_renorm_sft/litjev_optimization/reports/cpu-random-qwen3-with-renorm.json",
+    "model": null,
+    "revision": null,
+    "device": "cpu",
+    "dtype": "float32",
+    "threads": 2,
+    "repeats": 20,
+    "warmup": 2,
+    "state_chars": [
+      64,
+      256
+    ],
+    "questions": [
+      1,
+      4
+    ],
+    "choices": 4,
+    "seed": 42
+  },
+  "upstream_commit": "e7fb109a7466da9709028eb9c4e9f16eaeb4e2a3",
+  "random_model_only": true,
+  "torch": "2.14.0",
+  "transformers": "4.57.6",
+  "platform": "macOS-15.7.3-arm64-arm-64bit",
+  "model_config": {
+    "vocab_size": 32768,
+    "max_position_embeddings": 4096,
+    "hidden_size": 64,
+    "intermediate_size": 128,
+    "num_hidden_layers": 2,
+    "num_attention_heads": 4,
+    "use_sliding_window": false,
+    "sliding_window": null,
+    "max_window_layers": 28,
+    "num_key_value_heads": 2,
+    "head_dim": 16,
+    "hidden_act": "silu",
+    "initializer_range": 0.02,
+    "rms_norm_eps": 1e-06,
+    "use_cache": true,
+    "rope_theta": 10000.0,
+    "rope_scaling": null,
+    "attention_bias": false,
+    "attention_dropout": 0.0,
+    "layer_types": [
+      "full_attention",
+      "full_attention"
+    ],
+    "return_dict": true,
+    "output_hidden_states": false,
+    "torchscript": false,
+    "dtype": null,
+    "pruned_heads": {},
+    "tie_word_embeddings": false,
+    "chunk_size_feed_forward": 0,
+    "is_encoder_decoder": false,
+    "is_decoder": false,
+    "cross_attention_hidden_size": null,
+    "add_cross_attention": false,
+    "tie_encoder_decoder": false,
+    "architectures": null,
+    "finetuning_task": null,
+    "id2label": {
+      "0": "LABEL_0",
+      "1": "LABEL_1"
+    },
+    "label2id": {
+      "LABEL_0": 0,
+      "LABEL_1": 1
+    },
+    "task_specific_params": null,
+    "problem_type": null,
+    "tokenizer_class": null,
+    "prefix": null,
+    "bos_token_id": null,
+    "pad_token_id": null,
+    "eos_token_id": null,
+    "sep_token_id": null,
+    "decoder_start_token_id": null,
+    "max_length": 20,
+    "min_length": 0,
+    "do_sample": false,
+    "early_stopping": false,
+    "num_beams": 1,
+    "temperature": 1.0,
+    "top_k": 50,
+    "top_p": 1.0,
+    "typical_p": 1.0,
+    "repetition_penalty": 1.0,
+    "length_penalty": 1.0,
+    "no_repeat_ngram_size": 0,
+    "encoder_no_repeat_ngram_size": 0,
+    "bad_words_ids": null,
+    "num_return_sequences": 1,
+    "output_scores": false,
+    "return_dict_in_generate": false,
+    "forced_bos_token_id": null,
+    "forced_eos_token_id": null,
+    "remove_invalid_values": false,
+    "exponential_decay_length_penalty": null,
+    "suppress_tokens": null,
+    "begin_suppress_tokens": null,
+    "num_beam_groups": 1,
+    "diversity_penalty": 0.0,
+    "_name_or_path": "",
+    "transformers_version": "4.57.6",
+    "tf_legacy_loss": false,
+    "use_bfloat16": false,
+    "model_type": "qwen3",
+    "output_attentions": false
+  },
+  "weights_changed": false,
+  "adapter_sha256": "c4d8b54c01df3a76de8ccde0e363a13de4937add7372a4d6b4167143fa46ec2f",
+  "timing_scope": "local scorer.score plus upstream candidate normalization, including prompt compilation, tensor creation, prefill, readout and CPU transfer; excludes model load and HTTP; cold state cache per request, hot process",
+  "warning": "Tiny random model results do not estimate accuracy or full-size model/GPU speedup.",
+  "cases": [
+    {
+      "state_chars": 64,
+      "questions": 1,
+      "choices": 4,
+      "prefix_tokens": 207,
+      "suffix_tokens": [
+        334
+      ],
+      "baseline_head_output_shapes": [
+        [
+          1,
+          1,
+          32768
+        ],
+        [
+          1,
+          334,
+          32768
+        ]
+      ],
+      "optimized_projected_elements": 4,
+      "parity": {
+        "max_logit_abs_error": 4.470348358154297e-08,
+        "max_probability_abs_error": 1.4457855024296862e-08,
+        "top_choice_agreement": 1.0
+      },
+      "timings": {
+        "baseline": {
+          "p50_ms": 15.30956249916926,
+          "p95_ms": 17.001420177984983,
+          "samples_ms": [
+            16.428374976385385,
+            16.553750028833747,
+            16.54579199384898,
+            16.608415986411273,
+            14.890957972966135,
+            14.067916956264526,
+            16.08612498966977,
+            15.305874985642731,
+            14.455791970249265,
+            14.154459000565112,
+            14.382374996785074,
+            14.796749979723245,
+            15.31325001269579,
+            14.320457994472235,
+            14.24233301077038,
+            15.559499966911972,
+            15.135499997995794,
+            17.66650000354275,
+            16.8414160143584,
+            16.966415976639837
+          ],
+          "cuda_peak_allocated_bytes": null
+        },
+        "optimized": {
+          "p50_ms": 11.389916500775144,
+          "p95_ms": 12.32802327722311,
+          "samples_ms": [
+            12.096500024199486,
+            12.315542029682547,
+            12.127791007515043,
+            11.543290980625898,
+            10.995041986461729,
+            10.682958993129432,
+            11.23654202092439,
+            11.166708951350302,
+            11.561334016732872,
+            10.044292022939771,
+            11.872332950588316,
+            10.783500038087368,
+            9.81474999571219,
+            10.879625042434782,
+            10.770833003334701,
+            10.845125012565404,
+            12.24641699809581,
+            11.644417012576014,
+            12.241915974300355,
+            12.565166980493814
+          ],
+          "cuda_peak_allocated_bytes": null
+        }
+      },
+      "paired_order": [
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ]
+      ],
+      "p50_speedup": 1.3441329879922619
+    },
+    {
+      "state_chars": 64,
+      "questions": 4,
+      "choices": 4,
+      "prefix_tokens": 207,
+      "suffix_tokens": [
+        334,
+        351,
+        368,
+        385
+      ],
+      "baseline_head_output_shapes": [
+        [
+          1,
+          1,
+          32768
+        ],
+        [
+          4,
+          385,
+          32768
+        ]
+      ],
+      "optimized_projected_elements": 16,
+      "parity": {
+        "max_logit_abs_error": 5.960464477539063e-08,
+        "max_probability_abs_error": 1.6501907229571344e-08,
+        "top_choice_agreement": 1.0
+      },
+      "timings": {
+        "baseline": {
+          "p50_ms": 54.96716650668532,
+          "p95_ms": 57.70068961719517,
+          "samples_ms": [
+            53.24116599513218,
+            55.962291022296995,
+            55.810166988521814,
+            54.38479100121185,
+            54.284874990116805,
+            53.53458400350064,
+            54.50787500012666,
+            58.70179203338921,
+            57.64800001634285,
+            54.97175001073629,
+            57.103083992842585,
+            54.53891697106883,
+            53.39333403389901,
+            54.774791991803795,
+            55.427375016734004,
+            57.4966249987483,
+            54.96258300263435,
+            55.36150000989437,
+            53.72212495421991,
+            55.7998750009574
+          ],
+          "cuda_peak_allocated_bytes": null
+        },
+        "optimized": {
+          "p50_ms": 25.090687500778586,
+          "p95_ms": 26.95265864895191,
+          "samples_ms": [
+            23.55133299715817,
+            26.95004199631512,
+            26.278499979525805,
+            23.174417030531913,
+            23.712333000730723,
+            22.947165998630226,
+            22.074167034588754,
+            26.48787497309968,
+            26.29683300619945,
+            26.594291033688933,
+            24.255125026684254,
+            23.843250004574656,
+            25.023958005476743,
+            26.657374983187765,
+            26.189208030700684,
+            27.002375049050897,
+            25.15741699608043,
+            24.777541984803975,
+            24.470083008054644,
+            26.15808299742639
+          ],
+          "cuda_peak_allocated_bytes": null
+        }
+      },
+      "paired_order": [
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ]
+      ],
+      "p50_speedup": 2.1907397517497134
+    },
+    {
+      "state_chars": 256,
+      "questions": 1,
+      "choices": 4,
+      "prefix_tokens": 399,
+      "suffix_tokens": [
+        334
+      ],
+      "baseline_head_output_shapes": [
+        [
+          1,
+          1,
+          32768
+        ],
+        [
+          1,
+          334,
+          32768
+        ]
+      ],
+      "optimized_projected_elements": 4,
+      "parity": {
+        "max_logit_abs_error": 2.9802322387695312e-08,
+        "max_probability_abs_error": 1.0003471856423474e-08,
+        "top_choice_agreement": 1.0
+      },
+      "timings": {
+        "baseline": {
+          "p50_ms": 19.83697951072827,
+          "p95_ms": 22.222241616691463,
+          "samples_ms": [
+            19.7769160149619,
+            19.082500017248094,
+            19.405041995923966,
+            19.85737500945106,
+            19.004124973434955,
+            19.11533303791657,
+            20.273499947506934,
+            19.250417011789978,
+            21.333792014047503,
+            21.970124973449856,
+            22.213624964933842,
+            22.11970795178786,
+            21.644209045916796,
+            22.385958000086248,
+            19.816584012005478,
+            20.835457951761782,
+            20.041959010995924,
+            19.587624992709607,
+            19.63533303933218,
+            19.66862502740696
+          ],
+          "cuda_peak_allocated_bytes": null
+        },
+        "optimized": {
+          "p50_ms": 15.018562524346635,
+          "p95_ms": 17.644271135213785,
+          "samples_ms": [
+            14.95770801557228,
+            15.109082974959165,
+            13.785582967102528,
+            13.921874982770532,
+            14.617458975408226,
+            15.07941703312099,
+            14.841416967101395,
+            13.983167009428144,
+            14.31487500667572,
+            16.656332998536527,
+            16.971125034615397,
+            17.626166983973235,
+            17.988250008784235,
+            15.508499986026436,
+            15.535332961007953,
+            15.400208998471498,
+            14.78833396686241,
+            14.425207977183163,
+            14.775499992538244,
+            15.521291003096849
+          ],
+          "cuda_peak_allocated_bytes": null
+        }
+      },
+      "paired_order": [
+        [
+          "baseline",
+          "optimized"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ]
+      ],
+      "p50_speedup": 1.3208307704928808
+    },
+    {
+      "state_chars": 256,
+      "questions": 4,
+      "choices": 4,
+      "prefix_tokens": 399,
+      "suffix_tokens": [
+        334,
+        351,
+        368,
+        385
+      ],
+      "baseline_head_output_shapes": [
+        [
+          1,
+          1,
+          32768
+        ],
+        [
+          4,
+          385,
+          32768
+        ]
+      ],
+      "optimized_projected_elements": 16,
+      "parity": {
+        "max_logit_abs_error": 7.450580596923828e-08,
+        "max_probability_abs_error": 2.2095550722411872e-08,
+        "top_choice_agreement": 1.0
+      },
+      "timings": {
+        "baseline": {
+          "p50_ms": 69.10681250155903,
+          "p95_ms": 72.90868959971704,
+          "samples_ms": [
+            67.5232500070706,
+            68.12608399195597,
+            68.16762499511242,
+            69.85733297187835,
+            69.21220797812566,
+            67.2675829846412,
+            71.46687502972782,
+            69.84466698486358,
+            66.83995900675654,
+            67.37312499899417,
+            67.98804103164002,
+            69.0014170249924,
+            68.10354196932167,
+            69.53262496972457,
+            66.794290964026,
+            73.65566701628268,
+            72.86937499884516,
+            69.33037500130013,
+            69.31574997724965,
+            72.15779199032113
+          ],
+          "cuda_peak_allocated_bytes": null
+        },
+        "optimized": {
+          "p50_ms": 37.59543751948513,
+          "p95_ms": 40.84489764063619,
+          "samples_ms": [
+            37.82441595103592,
+            36.9296669960022,
+            39.50574999907985,
+            36.51354199973866,
+            35.49091605236754,
+            37.43224998470396,
+            38.698375050444156,
+            40.282165980897844,
+            37.10962500190362,
+            36.85779101215303,
+            37.51545900013298,
+            41.717750020325184,
+            37.914041022304446,
+            37.13562502525747,
+            36.95641702506691,
+            36.976874980609864,
+            40.79895804170519,
+            37.675416038837284,
+            40.70970800239593,
+            38.48462499445304
+          ],
+          "cuda_peak_allocated_bytes": null
+        }
+      },
+      "paired_order": [
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ],
+        [
+          "optimized",
+          "baseline"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ],
+        [
+          "baseline",
+          "optimized"
+        ]
+      ],
+      "p50_speedup": 1.8381701892880498
+    }
+  ]
+}

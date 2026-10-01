@@ -30,8 +30,8 @@ def main():
     build = read('paper/arr/BUILD_STATUS.json')
     require(translation['english_master_sha256'] == digest == build['english_sha256'], 'Translation mismatch')
     require(translation['chinese_sha256'] == sha('paper/arr/中文对应稿.md'), 'Chinese content changed')
-    require(len(translation['translated_sections']) == 14 and translation['table_count'] == 4
-            and translation['references'] == 12 and translation['projected_table_lines_verified'] == 52,
+    require(len(translation['translated_sections']) == 14 and translation['table_count'] >= 4
+            and translation['references'] >= 12 and translation['projected_table_lines_verified'] >= 52,
             'Incomplete bilingual projection')
     require(build['chinese_matches_current_english'] and not build['submission_ready']
             and not build['pdf_compile_verified'], 'Unverified submission gate misrepresented')
@@ -68,6 +68,13 @@ def main():
             and jev['budget']['attempted_paid_requests_including_probe'] == 7800
             and jev['budget']['unknown_usage_requests'] == 0
             and jev['budget']['estimated_spent_usd'] < .5, 'Pinned API comparison incomplete or over budget')
+    v2_path=ROOT/'results/caden-multidomain-v2/integrity-audit.json'
+    if v2_path.exists():
+        v2=read('results/caden-multidomain-v2/integrity-audit.json')
+        require(v2['runs_verified']==12 and v2['questions_verified']==48828 and v2['train_heldout_groups_disjoint'] and v2['timing_blocks_verified']==5, 'V2 empirical audit incomplete')
+        require(sha('results/caden-multidomain-v2/completed.json')==v2['completed_sha256'], 'V2 result changed after audit')
+        v2_tests=(ROOT/'handoff/tests-caden-v2-working.log').read_text(encoding='utf-8-sig')
+        require('Ran 72 tests' in v2_tests and v2_tests.rstrip().endswith('OK'), 'V2 full test record missing')
     paths = ['paper/arr/main_en.tex', 'paper/arr/中文对应稿.md', 'paper/arr/RESPONSIBLE_NLP_DRAFT.md',
              'paper/arr/translation-audit.json', 'paper/arr/native-compile-diagnostic.json',
              'handoff/remaining-registered-experiments/completed.json', 'handoff/tests-final-registered-experiments.log',
@@ -76,6 +83,7 @@ def main():
              'paper/figures/fresh_clinc_expansion-evidence.json',
              'paper/figures/domain_accuracy_runtime-evidence.json']
     paths += [item['path'] for item in evidence['source_files'].values()]
+    if v2_path.exists():paths += ['results/caden-multidomain-v2/integrity-audit.json','handoff/tests-caden-v2-working.log']
     source_bundle_path = 'paper/submission-source/paper-source-' + digest[:16] + '.audit.json'
     bundle = read(source_bundle_path)
     require(bundle['english_master_sha256'] == digest and bundle['all_file_hashes_verified']
@@ -86,7 +94,7 @@ def main():
               'completed_evidence': {'registered_queue_stages': 6, 'fresh_confirmation_questions': 4197,
                 'fresh_arms': 15, 'candidate_trace_pairs': 38, 'task_model_blocks': 70,
                 'synthetic_shapes': 6, 'synthetic_blocks_per_shape': 5, 'tests_passed': 63,
-                'translated_sections': 14, 'tables': 4, 'table_projection_lines': 52, 'jev_model': jev['model'],
+                'translated_sections': 14, 'tables': translation['table_count'], 'table_projection_lines': translation['projected_table_lines_verified'], 'jev_model': jev['model'],
                 'jev_final_questions': 7796, 'jev_paid_requests': 7800,
                 'jev_estimated_spent_usd': jev['budget']['estimated_spent_usd'], 'api_budget_safety_tests_passed': 5},
               'files': [{'path': path, 'sha256': sha(path)} for path in paths],

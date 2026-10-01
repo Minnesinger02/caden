@@ -22,13 +22,14 @@ def main():
             raise ValueError('Official style changed')
     files['TEMPLATE_PROVENANCE.json'] = json.dumps(template, indent=2).encode()
     files['README.md'] = (
-        '# Anonymous paper source preparation\n\n'
+        '# Collaborator paper source preparation\n\n'
         'English master: main_en.tex; Chinese counterpart: 中文对应稿.md. Official ACL review style files are unchanged. '
         'Bibliography and all four tables are embedded; no external figure or bibliography file is needed.\n\n'
         'No verified manuscript PDF is supplied. Native compilation failed: Unable to find standard directories for platform. '
         'Main-text page count, floats, hyperlinks, fonts and full review anonymity require rendered inspection. '
         'The Chinese text is a reading counterpart, not the ARR submission PDF.\n\n'
-        'This source-only preparation excludes private logs, absolute local paths, raw data, weights and author accounts. '
+        'This source-only preparation excludes private logs, absolute local paths, raw data and weights. '
+        'The collaborator manuscript includes identifying public Caden repository links; it is not an anonymized review artifact. '
         'The literal scan checks specified patterns and author settings; it does not certify complete anonymity, rights or human author review. '
         'Numerical reproducibility requires a separately reviewed anonymous supplement. This is not a completed submission.\n'
     ).encode('utf-8')
